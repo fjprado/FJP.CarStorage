@@ -94,9 +94,33 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
         }
 
         [HttpDelete("{idVeiculo:guid}")]
-        public async Task<ActionResult> ApagarVeiculo(Guid idVeiculo)
+        public async Task<ActionResult> ApagarVeiculo([FromRoute] Guid idVeiculo)
         {
-            return Ok();
+            try
+            {
+                await _veiculoService.Value.Remover(idVeiculo);
+                return Ok();
+            }
+            // catch(VeiculoNaoCadastradoException ex)
+            catch (Exception)
+            {
+                return NotFound("Não existe este veículo");
+            }
+        }
+
+        [HttpPut("{idVeiculo:guid}")]
+        public async Task<ActionResult> VenderVeiculo([FromRoute] Guid idVeiculo, [FromBody] VeiculoInputModel veiculoInputModel)
+        {
+            try
+            {
+                await _veiculoService.Value.Vender(idVeiculo, veiculoInputModel);
+                return Ok();
+            }
+            // catch(VeiculoNaoCadastradoException ex)
+            catch (Exception)
+            {
+                return NotFound("Não existe este veículo");
+            }
         }
     }
 }

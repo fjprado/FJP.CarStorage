@@ -23,11 +23,15 @@ namespace FJP.EstoqueVeiculos.InputModel
         [Required]
         [Range(1900, 2050, ErrorMessage = "O ano de modelo do veículo deve ser entre 1900 e 2050")]
         public int AnoModelo { get; set; }
-        [Required]
         [Range(1, 999999999999, ErrorMessage = "O valor de venda do veículo deve ser entre R$ 1,00 e R$ 999.999.999.999,00")]
         public decimal ValorVenda { get; set; }
+        [Range(typeof(DateTime), "1/2/2000", "31/12/2050", ErrorMessage = "Valor de {0} deve estar entre {1} e {2}")]
+        public DateTime DataVenda { get; set; }
         [Required]
         [Range(1, 999999999999, ErrorMessage = "O valor de compra do veículo deve ser entre R$ 1,00 e R$ 999.999.999.999,00")]
         public decimal ValorCompra { get; set; }
+        [Required]
+        [Range(typeof(DateTime), "1/2/2000", "31/12/2050", ErrorMessage = "Valor de {0} deve estar entre {1} e {2}")]
+        public DateTime DataCompra { get; set; }
     }
 }

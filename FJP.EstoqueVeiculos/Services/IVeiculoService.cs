@@ -15,5 +15,6 @@ namespace FJP.EstoqueVeiculos.Services
         Task Atualizar(Guid id, VeiculoInputModel veiculo);
         Task Atualizar(Guid id, decimal valorVenda);
         Task Remover(Guid id);
+        Task Vender(Guid id, VeiculoInputModel veiculo);
     }
 }

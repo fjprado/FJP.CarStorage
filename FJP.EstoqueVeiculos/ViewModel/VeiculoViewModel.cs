@@ -13,7 +13,9 @@ namespace FJP.EstoqueVeiculos.ViewModel
         public string Marca { get; set; }
         public int AnoFabricacao { get; set; }
         public int AnoModelo { get; set; }
-        public decimal ValorVenda { get; set; }
+        public decimal? ValorVenda { get; set; }
+        public DateTime? DataVenda { get; set; }
         public decimal ValorCompra { get; set; }
+        public DateTime DataCompra { get; set; }
     }
 }
