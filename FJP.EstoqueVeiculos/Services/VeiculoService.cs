@@ -136,9 +136,17 @@ namespace FJP.EstoqueVeiculos.Services
             throw new NotImplementedException();
         }
 
-        public Task Vender(Guid id, VeiculoInputModel veiculo)
+        public async Task Vender(Guid id, VeiculoInputModel veiculo)
         {
-            throw new NotImplementedException();
+            var entidadeVeiculo = await _veiculoRepository.Value.Obter(id);
+
+            if (entidadeVeiculo == null)
+                throw new VeiculoNaoCadastradoException();
+
+            entidadeVeiculo.ValorVenda = veiculo.ValorVenda;
+            entidadeVeiculo.DataVenda = veiculo.DataVenda;
+
+            await _veiculoRepository.Value.Atualizar(entidadeVeiculo);
         }
 
         public void Dispose()
