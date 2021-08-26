@@ -10,6 +10,7 @@ namespace FJP.EstoqueVeiculos.Repositories
     {
         Task<List<Veiculo>> Obter(int pagina, int quantidade);
         Task<Veiculo> Obter(Guid id);
+        Task<Veiculo> ObterPorChassi(string chassi);
         Task<List<Veiculo>> Obter(string modelo, string marca);
         Task Inserir(Veiculo veiculo);
         Task Atualizar(Veiculo veiculo);
