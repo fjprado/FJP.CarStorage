@@ -13,7 +13,7 @@ namespace FJP.EstoqueVeiculos.Services
         Task<VeiculoViewModel> Obter(Guid id);
         Task<VeiculoViewModel> Inserir(VeiculoInputModel veiculo);
         Task Atualizar(Guid id, VeiculoInputModel veiculo);
-        Task Atualizar(Guid id, double valorVenda);
+        Task Atualizar(Guid id, decimal valorVenda);
         Task Remover(Guid id);
     }
 }

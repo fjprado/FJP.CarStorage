@@ -79,9 +79,18 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
         }
 
         [HttpPatch("{idVeiculo:guid}/valorvenda/{valorVenda:decimal}")]
-        public async Task<ActionResult> AtualizarVeiculo(Guid idVeiculo, decimal valorVenda)
+        public async Task<ActionResult> AtualizarVeiculo([FromRoute] Guid idVeiculo, [FromRoute] decimal valorVenda)
         {
-            return Ok();
+            try
+            {
+                await _veiculoService.Value.Atualizar(idVeiculo, valorVenda);
+                return Ok();
+            }
+            // catch(VeiculoNaoCadastradoException ex)
+            catch (Exception)
+            {
+                return NotFound("Não existe este veículo");
+            }
         }
 
         [HttpDelete("{idVeiculo:guid}")]
