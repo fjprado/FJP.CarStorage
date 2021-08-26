@@ -1,4 +1,5 @@
-﻿using FJP.EstoqueVeiculos.InputModel;
+﻿using FJP.EstoqueVeiculos.Exceptions;
+using FJP.EstoqueVeiculos.InputModel;
 using FJP.EstoqueVeiculos.Services;
 using FJP.EstoqueVeiculos.ViewModel;
 using Microsoft.AspNetCore.Http;
@@ -55,8 +56,7 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
 
                 return Ok(veiculo);
             }
-            //catch (VeiculoJaCadastradoException ex)
-            catch(Exception ex)
+            catch (VeiculoJaCadastradoException ex)
             {
                 return UnprocessableEntity("Já existe um veículo com o mesmo chassi cadastrado!");
             }
@@ -71,8 +71,7 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
                 await _veiculoService.Value.Atualizar(idVeiculo, veiculoInputModel);
                 return Ok();
             }
-            // catch(VeiculoNaoCadastradoException ex)
-            catch (Exception)
+            catch(VeiculoNaoCadastradoException ex)
             {
                 return NotFound("Não existe este veículo");
             }
@@ -86,8 +85,7 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
                 await _veiculoService.Value.Atualizar(idVeiculo, valorVenda);
                 return Ok();
             }
-            // catch(VeiculoNaoCadastradoException ex)
-            catch (Exception)
+            catch(VeiculoNaoCadastradoException ex)
             {
                 return NotFound("Não existe este veículo");
             }
@@ -101,8 +99,7 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
                 await _veiculoService.Value.Remover(idVeiculo);
                 return Ok();
             }
-            // catch(VeiculoNaoCadastradoException ex)
-            catch (Exception)
+            catch(VeiculoNaoCadastradoException ex)
             {
                 return NotFound("Não existe este veículo");
             }
@@ -116,8 +113,7 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
                 await _veiculoService.Value.Vender(idVeiculo, veiculoInputModel);
                 return Ok();
             }
-            // catch(VeiculoNaoCadastradoException ex)
-            catch (Exception)
+            catch(VeiculoNaoCadastradoException ex)
             {
                 return NotFound("Não existe este veículo");
             }
