@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FJP.EstoqueVeiculos.Services
 {
-    public interface IVeiculoService
+    public interface IVeiculoService : IDisposable
     {
         Task<List<VeiculoViewModel>> Obter(int pagina, int quantidade);
         Task<VeiculoViewModel> Obter(Guid id);
