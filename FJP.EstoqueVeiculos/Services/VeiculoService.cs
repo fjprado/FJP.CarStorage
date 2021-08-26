@@ -23,12 +23,34 @@ namespace FJP.EstoqueVeiculos.Services
 
         public async Task Atualizar(Guid id, VeiculoInputModel veiculo)
         {
-            throw new NotImplementedException();
+            var entidadeVeiculo = await _veiculoRepository.Value.Obter(id);
+
+            if (entidadeVeiculo == null)
+                throw new VeiculoNaoCadastradoException();
+
+            entidadeVeiculo.Chassi = veiculo.Chassi;
+            entidadeVeiculo.Modelo = veiculo.Modelo;
+            entidadeVeiculo.Marca = veiculo.Marca;
+            entidadeVeiculo.AnoFabricacao = veiculo.AnoFabricacao;
+            entidadeVeiculo.AnoModelo = veiculo.AnoModelo;
+            entidadeVeiculo.ValorVenda = veiculo.ValorVenda;
+            entidadeVeiculo.DataVenda = veiculo.DataVenda;
+            entidadeVeiculo.ValorCompra = veiculo.ValorCompra;
+            entidadeVeiculo.DataCompra = veiculo.DataCompra;
+
+            await _veiculoRepository.Value.Atualizar(entidadeVeiculo);
         }
 
-        public Task Atualizar(Guid id, decimal valorVenda)
+        public async Task Atualizar(Guid id, decimal valorVenda)
         {
-            throw new NotImplementedException();
+            var entidadeVeiculo = await _veiculoRepository.Value.Obter(id);
+
+            if (entidadeVeiculo == null)
+                throw new VeiculoNaoCadastradoException();
+
+            entidadeVeiculo.ValorVenda = valorVenda;
+
+            await _veiculoRepository.Value.Atualizar(entidadeVeiculo);
         }
 
         public async Task<VeiculoViewModel> Inserir(VeiculoInputModel veiculo)
