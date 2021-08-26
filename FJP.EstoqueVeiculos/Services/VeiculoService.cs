@@ -52,9 +52,26 @@ namespace FJP.EstoqueVeiculos.Services
             }).ToList();
         }
 
-        public Task<VeiculoViewModel> Obter(Guid id)
+        public async Task<VeiculoViewModel> Obter(Guid id)
         {
-            throw new NotImplementedException();
+            var veiculo = await _veiculoRepository.Value.Obter(id);
+
+            if (veiculo == null)
+                return null;
+
+            return new VeiculoViewModel
+            {
+                Id = veiculo.Id,
+                Chassi = veiculo.Chassi,
+                Modelo = veiculo.Modelo,
+                Marca = veiculo.Marca,
+                AnoFabricacao = veiculo.AnoFabricacao,
+                AnoModelo = veiculo.AnoModelo,
+                ValorVenda = veiculo.ValorVenda,
+                DataVenda = veiculo.DataVenda,
+                ValorCompra = veiculo.ValorCompra,
+                DataCompra = veiculo.DataCompra
+            };
         }
 
         public Task Remover(Guid id)
