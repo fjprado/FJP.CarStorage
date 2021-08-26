@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FJP.EstoqueVeiculos.Services;
+using FJP.EstoqueVeiculos.ViewModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,9 +14,23 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
     [ApiController]
     public class VeiculosController : ControllerBase
     {
-        [HttpGet]
-        public async Task<ActionResult<List<object>>> Obter()
+        private readonly Lazy<IVeiculoService> _veiculoService;
+
+        public VeiculosController(
+            Lazy<IVeiculoService> veiculoService
+            )
         {
+            _veiculoService = veiculoService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<VeiculoViewModel>>> Obter([FromQuery, Range(1, int.MaxValue)] int pagina = 1, [FromQuery, Range(1, 50)] int quantidade = 5)
+        {
+            var veiculos = await _veiculoService.Value.Obter(pagina, quantidade);
+
+            if(veiculos.Count == 0)
+                return NoContent();
+
             return Ok();
         }
 
