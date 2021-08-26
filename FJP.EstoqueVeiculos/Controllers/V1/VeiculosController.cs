@@ -1,4 +1,5 @@
-﻿using FJP.EstoqueVeiculos.Services;
+﻿using FJP.EstoqueVeiculos.InputModel;
+using FJP.EstoqueVeiculos.Services;
 using FJP.EstoqueVeiculos.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -46,9 +47,20 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
         }
 
         [HttpPost]
-        public async Task<ActionResult<object>> InserirVeiculo(object veiculo)
+        public async Task<ActionResult<VeiculoViewModel>> InserirVeiculo([FromBody] VeiculoInputModel veiculoInputModel)
         {
-            return Ok();
+            try
+            {
+                var veiculo = await _veiculoService.Value.Inserir(veiculoInputModel);
+
+                return Ok(veiculo);
+            }
+            //catch (VeiculoJaCadastradoException ex)
+            catch(Exception ex)
+            {
+                return UnprocessableEntity("Já existe um veículo com o mesmo chassi cadastrado!");
+            }
+            
         }
 
         [HttpPut("{idVeiculo:guid}")]

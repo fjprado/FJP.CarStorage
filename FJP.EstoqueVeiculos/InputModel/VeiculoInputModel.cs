@@ -9,6 +9,9 @@ namespace FJP.EstoqueVeiculos.InputModel
     public class VeiculoInputModel
     {
         [Required]
+        [StringLength(17, MinimumLength = 1, ErrorMessage = "O chassi do veículo deve ser único e conter entre 1 e 17 caracteres")]
+        public string Chassi { get; set; }
+        [Required]
         [StringLength(200, MinimumLength = 3, ErrorMessage = "O modelo do veículo deve conter entre 3 e 200 caracteres")]
         public string Modelo { get; set; }
         [Required]

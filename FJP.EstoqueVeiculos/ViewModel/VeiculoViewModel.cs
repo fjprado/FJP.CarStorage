@@ -8,6 +8,7 @@ namespace FJP.EstoqueVeiculos.ViewModel
     public class VeiculoViewModel
     {
         public Guid Id { get; set; }
+        public string Chassi { get; set; }
         public string Modelo { get; set; }
         public string Marca { get; set; }
         public int AnoFabricacao { get; set; }
