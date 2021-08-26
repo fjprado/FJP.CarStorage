@@ -35,8 +35,13 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
         }
 
         [HttpGet("{idVeiculo:guid}")]
-        public async Task<ActionResult<object>> Obter(Guid idVeiculo)
+        public async Task<ActionResult<VeiculoViewModel>> Obter([FromRoute] Guid idVeiculo)
         {
+            var veiculo = await _veiculoService.Value.Obter(idVeiculo);
+
+            if (veiculo == null)
+                return NoContent();
+
             return Ok();
         }
 
