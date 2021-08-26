@@ -131,9 +131,14 @@ namespace FJP.EstoqueVeiculos.Services
             };
         }
 
-        public Task Remover(Guid id)
+        public async Task Remover(Guid id)
         {
-            throw new NotImplementedException();
+            var veiculo = await _veiculoRepository.Value.Obter(id);
+
+            if (veiculo == null)
+                throw new VeiculoNaoCadastradoException();
+
+            await _veiculoRepository.Value.Remover(id);
         }
 
         public async Task Vender(Guid id, VeiculoInputModel veiculo)
