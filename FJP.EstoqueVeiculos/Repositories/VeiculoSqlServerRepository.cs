@@ -102,9 +102,39 @@ namespace FJP.EstoqueVeiculos.Repositories
             return veiculo;
         }
 
-        public Task<List<Veiculo>> Obter(string modelo, string marca)
+        public async Task<List<Veiculo>> Obter(string modelo, string marca)
         {
-            throw new NotImplementedException();
+            var veiculos = new List<Veiculo>();
+
+            var query = $@"SELECT *
+                        FROM veiculos
+                        WHERE modelo = '{modelo}'
+                        AND marca = '{marca}'";
+
+            await sqlConnection.OpenAsync();
+            SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+            SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
+
+            while (sqlDataReader.Read())
+            {
+                veiculos.Add(new Veiculo
+                {
+                    Id = (Guid)sqlDataReader["Id"],
+                    Chassi = (string)sqlDataReader["Chassi"],
+                    Modelo = (string)sqlDataReader["Modelo"],
+                    Marca = (string)sqlDataReader["Marca"],
+                    AnoFabricacao = (int)sqlDataReader["AnoFabricacao"],
+                    AnoModelo = (int)sqlDataReader["AnoModelo"],
+                    ValorVenda = (decimal)sqlDataReader["ValorVenda"],
+                    DataVenda = (DateTime)sqlDataReader["DataVenda"],
+                    ValorCompra = (decimal)sqlDataReader["ValorCompra"],
+                    DataCompra = (DateTime)sqlDataReader["DataCompra"]
+                });
+            }
+
+            await sqlConnection.CloseAsync();
+
+            return veiculos;
         }
 
         public Task<Veiculo> ObterPorChassi(string chassi)
