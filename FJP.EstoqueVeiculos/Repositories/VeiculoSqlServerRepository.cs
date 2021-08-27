@@ -17,9 +17,24 @@ namespace FJP.EstoqueVeiculos.Repositories
             sqlConnection = new SqlConnection(configuration.GetConnectionString("Default"));
         }
 
-        public Task Atualizar(Veiculo veiculo)
+        public async Task Atualizar(Veiculo veiculo)
         {
-            throw new NotImplementedException();
+            var query = $@"UPDATE veiculos
+                        SET chassi = '{veiculo.Chassi}',
+                            modelo = '{veiculo.Modelo}',
+                            marca = '{veiculo.Marca}',
+                            anofabricacao = '{veiculo.AnoFabricacao}',
+                            anomodelo = '{veiculo.AnoModelo}',
+                            valorvenda = '{veiculo.ValorVenda.ToString().Replace(",", ".")}',
+                            datavenda = '{veiculo.DataVenda}',
+                            valorcompra = '{veiculo.ValorCompra.ToString().Replace(",", ".")}',
+                            datavenda = '{veiculo.DataCompra}'
+                        WHERE id = '{veiculo.Id}'";
+
+            await sqlConnection.OpenAsync();
+            SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+            sqlCommand.ExecuteNonQuery();
+            await sqlConnection.CloseAsync();
         }
 
         public void Dispose()
