@@ -35,7 +35,7 @@ namespace FJP.EstoqueVeiculos
             });
 
             services.AddTransient<IVeiculoService, VeiculoService>();
-            services.AddTransient<IVeiculoRepository, VeiculoRepository>();
+            services.AddTransient<IVeiculoRepository, VeiculoSqlServerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
