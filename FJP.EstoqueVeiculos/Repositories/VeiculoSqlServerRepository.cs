@@ -206,9 +206,17 @@ namespace FJP.EstoqueVeiculos.Repositories
             throw new NotImplementedException();
         }
 
-        public Task Vender(Veiculo veiculo)
+        public async Task Vender(Veiculo veiculo)
         {
-            throw new NotImplementedException();
+            var query = $@"UPDATE veiculos
+                        SET valorvenda = '{veiculo.ValorVenda.ToString().Replace(",", ".")}',
+                            datavenda = '{veiculo.DataVenda}'
+                        WHERE id = '{veiculo.Id}'";
+
+            await sqlConnection.OpenAsync();
+            SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+            sqlCommand.ExecuteNonQuery();
+            await sqlConnection.CloseAsync();
         }
     }
 }
