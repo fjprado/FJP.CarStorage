@@ -1,3 +1,4 @@
+using FJP.EstoqueVeiculos.Middleware;
 using FJP.EstoqueVeiculos.Repositories;
 using FJP.EstoqueVeiculos.Services;
 using Microsoft.AspNetCore.Builder;
@@ -53,6 +54,8 @@ namespace FJP.EstoqueVeiculos
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FJP.EstoqueVeiculos v1"));
             }
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 
