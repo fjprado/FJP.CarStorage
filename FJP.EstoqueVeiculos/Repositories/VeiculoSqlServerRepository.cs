@@ -27,9 +27,24 @@ namespace FJP.EstoqueVeiculos.Repositories
             throw new NotImplementedException();
         }
 
-        public Task Inserir(Veiculo veiculo)
+        public async Task Inserir(Veiculo veiculo)
         {
-            throw new NotImplementedException();
+            var query = $@"INSERT veiculos
+                        VALUES ('{veiculo.Id}', 
+                                '{veiculo.Chassi}',
+                                '{veiculo.Modelo}',
+                                '{veiculo.Marca}',
+                                '{veiculo.AnoFabricacao}',
+                                '{veiculo.AnoModelo}',
+                                '{veiculo.ValorVenda.ToString().Replace(",", ".")}',
+                                '{veiculo.DataVenda}',
+                                '{veiculo.ValorCompra.ToString().Replace(",", ".")}',
+                                '{veiculo.DataCompra}'";
+
+            await sqlConnection.OpenAsync();
+            SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+            sqlCommand.ExecuteNonQuery();
+            await sqlConnection.CloseAsync();
         }
 
         public async Task<List<Veiculo>> Obter(int pagina, int quantidade)
