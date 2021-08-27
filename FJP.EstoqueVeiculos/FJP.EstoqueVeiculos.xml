@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FJP.EstoqueVeiculos</name>
+    </assembly>
+    <members>
+        <member name="M:FJP.EstoqueVeiculos.Controllers.V1.VeiculosController.Obter(System.Int32,System.Int32)">
+            <summary>
+            Buscar todos os veículos de forma paginada
+            </summary>
+            <remarks>
+            Não é possível retornar os veículos sem paginação
+            </remarks>
+            <param name="pagina">Indica qual página está sendo consultada. Mínimo 1</param>
+            <param name="quantidade">Indica a quantidade de registros por página. Mínimo 1 e máximo 50</param>
+            <response code="200">Retorna a lista de veículos</response>
+            <response code="204">Caso não haja veículos</response>   
+        </member>
+        <member name="M:FJP.EstoqueVeiculos.Controllers.V1.VeiculosController.Obter(System.String)">
+            <summary>
+            Buscar um veiculo pelo seu Chassi
+            </summary>
+            <param name="chassi">Chassi do veiculo buscado</param>
+            <response code="200">Retorna o veiculo filtrado</response>
+            <response code="204">Caso não haja veiculo com este id</response> 
+        </member>
+        <member name="M:FJP.EstoqueVeiculos.Controllers.V1.VeiculosController.InserirVeiculo(FJP.EstoqueVeiculos.InputModel.VeiculoInputModel)">
+            <summary>
+            Inserir um veiculo no catálogo
+            </summary>
+            <param name="veiculoInputModel">Dados do veiculo a ser inserido</param>
+            <response code="200">Caso o veiculo seja inserido com sucesso</response>
+            <response code="422">Caso já exista um veiculo com mesmo chassi cadastrado</response>
+        </member>
+        <member name="M:FJP.EstoqueVeiculos.Controllers.V1.VeiculosController.AtualizarVeiculo(System.Guid,FJP.EstoqueVeiculos.InputModel.VeiculoInputModel)">
+            <summary>
+            Atualizar um veiculo no catálogo
+            </summary>
+            /// <param name="idVeiculo">Id do veiculo a ser atualizado</param>
+            <param name="veiculoInputModel">Novos dados para atualizar o veiculo indicado</param>
+            <response code="200">Caso o veiculo seja atualizado com sucesso</response>
+            <response code="404">Caso não exista um veiculo com este Id</response>  
+        </member>
+        <member name="M:FJP.EstoqueVeiculos.Controllers.V1.VeiculosController.AtualizarVeiculo(System.Guid,System.Decimal)">
+            <summary>
+            Atualizar o valor de venda de um veiculo
+            </summary>
+            /// <param name="idVeiculo">Id do veiculo a ser atualizado</param>
+            <param name="valorVenda">Novo valor de venda do veiculo</param>
+            <response code="200">Caso o valor de venda seja atualizado com sucesso</response>
+            <response code="404">Caso não exista um veiculo com este Id</response> 
+        </member>
+        <member name="M:FJP.EstoqueVeiculos.Controllers.V1.VeiculosController.ApagarVeiculo(System.Guid)">
+            <summary>
+            Excluir um veiculo
+            </summary>
+            /// <param name="idVeiculo">Id do veiculo a ser excluído</param>
+            <response code="200">Caso o seja excluído com sucesso</response>
+            <response code="404">Caso não exista um veiculo com este Id</response>
+        </member>
+        <member name="M:FJP.EstoqueVeiculos.Controllers.V1.VeiculosController.VenderVeiculo(System.String,FJP.EstoqueVeiculos.InputModel.VeiculoVendaInputModel)">
+            <summary>
+            Vender um veiculo
+            </summary>
+            /// <param name="chassi">Chassi do veiculo a ser vendido</param>
+            <param name="veiculoVendido">Informar data e valor da venda do veiculo</param>
+            <response code="200">Caso o veículo seja vendido com sucesso</response>
+            <response code="404">Caso não exista um veiculo com este chassi</response> 
+        </member>
+    </members>
+</doc>

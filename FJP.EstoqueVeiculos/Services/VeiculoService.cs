@@ -12,10 +12,10 @@ namespace FJP.EstoqueVeiculos.Services
 {
     public class VeiculoService : IVeiculoService
     {
-        private readonly Lazy<IVeiculoRepository> _veiculoRepository;
+        private readonly IVeiculoRepository _veiculoRepository;
 
         public VeiculoService(
-            Lazy<IVeiculoRepository> veiculoRepository
+            IVeiculoRepository veiculoRepository
             )
         {
             _veiculoRepository = veiculoRepository;
@@ -23,7 +23,7 @@ namespace FJP.EstoqueVeiculos.Services
 
         public async Task Atualizar(Guid id, VeiculoInputModel veiculo)
         {
-            var entidadeVeiculo = await _veiculoRepository.Value.Obter(id);
+            var entidadeVeiculo = await _veiculoRepository.Obter(id);
 
             if (entidadeVeiculo == null)
                 throw new VeiculoNaoCadastradoException();
@@ -38,24 +38,24 @@ namespace FJP.EstoqueVeiculos.Services
             entidadeVeiculo.ValorCompra = veiculo.ValorCompra;
             entidadeVeiculo.DataCompra = veiculo.DataCompra;
 
-            await _veiculoRepository.Value.Atualizar(entidadeVeiculo);
+            await _veiculoRepository.Atualizar(entidadeVeiculo);
         }
 
         public async Task Atualizar(Guid id, decimal valorVenda)
         {
-            var entidadeVeiculo = await _veiculoRepository.Value.Obter(id);
+            var entidadeVeiculo = await _veiculoRepository.Obter(id);
 
             if (entidadeVeiculo == null)
                 throw new VeiculoNaoCadastradoException();
 
             entidadeVeiculo.ValorVenda = valorVenda;
 
-            await _veiculoRepository.Value.Atualizar(entidadeVeiculo);
+            await _veiculoRepository.Atualizar(entidadeVeiculo);
         }
 
         public async Task<VeiculoViewModel> Inserir(VeiculoInputModel veiculo)
         {
-            var entidadeVeiculo = await _veiculoRepository.Value.ObterPorChassi(veiculo.Chassi);
+            var entidadeVeiculo = await _veiculoRepository.ObterPorChassi(veiculo.Chassi);
 
             if (entidadeVeiculo != null)
                 throw new VeiculoJaCadastradoException();
@@ -74,7 +74,7 @@ namespace FJP.EstoqueVeiculos.Services
                 DataCompra = veiculo.DataCompra
             };
 
-            await _veiculoRepository.Value.Inserir(veiculoInsert);
+            await _veiculoRepository.Inserir(veiculoInsert);
 
             return new VeiculoViewModel
             {
@@ -93,7 +93,7 @@ namespace FJP.EstoqueVeiculos.Services
 
         public async Task<List<VeiculoViewModel>> Obter(int pagina, int quantidade)
         {
-            var veiculos = await _veiculoRepository.Value.Obter(pagina, quantidade);
+            var veiculos = await _veiculoRepository.Obter(pagina, quantidade);
             return veiculos.Select(veiculo => new VeiculoViewModel
             {
                 Id = veiculo.Id,
@@ -111,7 +111,7 @@ namespace FJP.EstoqueVeiculos.Services
 
         public async Task<VeiculoViewModel> Obter(Guid id)
         {
-            var veiculo = await _veiculoRepository.Value.Obter(id);
+            var veiculo = await _veiculoRepository.Obter(id);
 
             if (veiculo == null)
                 return null;
@@ -133,7 +133,7 @@ namespace FJP.EstoqueVeiculos.Services
 
         public async Task<VeiculoViewModel> ObterPorChassi(string chassi)
         {
-            var veiculo = await _veiculoRepository.Value.ObterPorChassi(chassi);
+            var veiculo = await _veiculoRepository.ObterPorChassi(chassi);
 
             if (veiculo == null)
                 return null;
@@ -155,17 +155,17 @@ namespace FJP.EstoqueVeiculos.Services
 
         public async Task Remover(Guid id)
         {
-            var veiculo = await _veiculoRepository.Value.Obter(id);
+            var veiculo = await _veiculoRepository.Obter(id);
 
             if (veiculo == null)
                 throw new VeiculoNaoCadastradoException();
 
-            await _veiculoRepository.Value.Remover(id);
+            await _veiculoRepository.Remover(id);
         }
 
         public async Task Vender(string chassi, DateTime dataVenda, decimal valorVenda)
         {
-            var entidadeVeiculo = await _veiculoRepository.Value.ObterPorChassi(chassi);
+            var entidadeVeiculo = await _veiculoRepository.ObterPorChassi(chassi);
 
             if (entidadeVeiculo == null)
                 throw new VeiculoNaoCadastradoException();
@@ -173,12 +173,12 @@ namespace FJP.EstoqueVeiculos.Services
             entidadeVeiculo.ValorVenda = valorVenda;
             entidadeVeiculo.DataVenda = dataVenda;
 
-            await _veiculoRepository.Value.Vender(entidadeVeiculo);
+            await _veiculoRepository.Vender(entidadeVeiculo);
         }
 
         public void Dispose()
         {
-            _veiculoRepository.Value.Dispose();
+            _veiculoRepository.Dispose();
         }
     }
 }

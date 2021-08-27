@@ -4,6 +4,7 @@ using FJP.EstoqueVeiculos.Services;
 using FJP.EstoqueVeiculos.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,10 +17,10 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
     [ApiController]
     public class VeiculosController : ControllerBase
     {
-        private readonly Lazy<IVeiculoService> _veiculoService;
+        private readonly IVeiculoService _veiculoService;
 
         public VeiculosController(
-            Lazy<IVeiculoService> veiculoService
+            IVeiculoService veiculoService
             )
         {
             _veiculoService = veiculoService;
@@ -38,7 +39,7 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VeiculoViewModel>>> Obter([FromQuery, Range(1, int.MaxValue)] int pagina = 1, [FromQuery, Range(1, 50)] int quantidade = 5)
         {
-            var veiculos = await _veiculoService.Value.Obter(pagina, quantidade);
+            var veiculos = await _veiculoService.Obter(pagina, quantidade);
 
             if(veiculos.Count == 0)
                 return NoContent();
@@ -55,7 +56,7 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
         [HttpGet("{chassi:string}")]
         public async Task<ActionResult<VeiculoViewModel>> Obter([FromRoute] string chassi)
         {
-            var veiculo = await _veiculoService.Value.ObterPorChassi(chassi);
+            var veiculo = await _veiculoService.ObterPorChassi(chassi);
 
             if (veiculo == null)
                 return NoContent();
@@ -74,7 +75,7 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
         {
             try
             {
-                var veiculo = await _veiculoService.Value.Inserir(veiculoInputModel);
+                var veiculo = await _veiculoService.Inserir(veiculoInputModel);
 
                 return Ok(veiculo);
             }
@@ -97,7 +98,7 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
         {
             try
             {
-                await _veiculoService.Value.Atualizar(idVeiculo, veiculoInputModel);
+                await _veiculoService.Atualizar(idVeiculo, veiculoInputModel);
                 return Ok();
             }
             catch(VeiculoNaoCadastradoException ex)
@@ -118,7 +119,7 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
         {
             try
             {
-                await _veiculoService.Value.Atualizar(idVeiculo, valorVenda);
+                await _veiculoService.Atualizar(idVeiculo, valorVenda);
                 return Ok();
             }
             catch(VeiculoNaoCadastradoException ex)
@@ -138,7 +139,7 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
         {
             try
             {
-                await _veiculoService.Value.Remover(idVeiculo);
+                await _veiculoService.Remover(idVeiculo);
                 return Ok();
             }
             catch(VeiculoNaoCadastradoException ex)
@@ -151,16 +152,15 @@ namespace FJP.EstoqueVeiculos.Controllers.V1
         /// Vender um veiculo
         /// </summary>
         /// /// <param name="chassi">Chassi do veiculo a ser vendido</param>
-        /// <param name="dataVenda">Data da venda do veiculo</param>
-        /// <param name="valorVenda">Valor de Venda do veiculo</param>
+        /// <param name="veiculoVendido">Informar data e valor da venda do veiculo</param>
         /// <response code="200">Caso o veículo seja vendido com sucesso</response>
         /// <response code="404">Caso não exista um veiculo com este chassi</response> 
         [HttpPut("{chassi:string}")]
-        public async Task<ActionResult> VenderVeiculo([FromRoute] string chassi, [FromBody] DateTime dataVenda, [FromBody] decimal valorVenda)
+        public async Task<ActionResult> VenderVeiculo([FromRoute] string chassi, [FromBody] VeiculoVendaInputModel veiculoVendido)
         {
             try
             {
-                await _veiculoService.Value.Vender(chassi, dataVenda, valorVenda);
+                await _veiculoService.Vender(chassi, veiculoVendido.DataVenda, veiculoVendido.ValorVenda);
                 return Ok();
             }
             catch(VeiculoNaoCadastradoException ex)

@@ -41,8 +41,8 @@ namespace FJP.EstoqueVeiculos
                 c.IncludeXmlComments(Path.Combine(basePath, fileName));
             });
 
-            services.AddTransient<IVeiculoService, VeiculoService>();
-            services.AddTransient<IVeiculoRepository, VeiculoSqlServerRepository>();
+            services.AddScoped<IVeiculoService, VeiculoService>();
+            services.AddScoped<IVeiculoRepository, VeiculoSqlServerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
