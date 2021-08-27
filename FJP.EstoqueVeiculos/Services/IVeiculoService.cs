@@ -11,10 +11,11 @@ namespace FJP.EstoqueVeiculos.Services
     {
         Task<List<VeiculoViewModel>> Obter(int pagina, int quantidade);
         Task<VeiculoViewModel> Obter(Guid id);
+        Task<VeiculoViewModel> ObterPorChassi(string chassi);
         Task<VeiculoViewModel> Inserir(VeiculoInputModel veiculo);
         Task Atualizar(Guid id, VeiculoInputModel veiculo);
         Task Atualizar(Guid id, decimal valorVenda);
         Task Remover(Guid id);
-        Task Vender(Guid id, VeiculoInputModel veiculo);
+        Task Vender(string chassi, DateTime dataVenda, decimal valorVenda);
     }
 }

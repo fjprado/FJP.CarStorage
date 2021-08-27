@@ -131,6 +131,28 @@ namespace FJP.EstoqueVeiculos.Services
             };
         }
 
+        public async Task<VeiculoViewModel> ObterPorChassi(string chassi)
+        {
+            var veiculo = await _veiculoRepository.Value.ObterPorChassi(chassi);
+
+            if (veiculo == null)
+                return null;
+
+            return new VeiculoViewModel
+            {
+                Id = veiculo.Id,
+                Chassi = veiculo.Chassi,
+                Modelo = veiculo.Modelo,
+                Marca = veiculo.Marca,
+                AnoFabricacao = veiculo.AnoFabricacao,
+                AnoModelo = veiculo.AnoModelo,
+                ValorVenda = veiculo.ValorVenda,
+                DataVenda = veiculo.DataVenda,
+                ValorCompra = veiculo.ValorCompra,
+                DataCompra = veiculo.DataCompra
+            };
+        }
+
         public async Task Remover(Guid id)
         {
             var veiculo = await _veiculoRepository.Value.Obter(id);
@@ -141,17 +163,17 @@ namespace FJP.EstoqueVeiculos.Services
             await _veiculoRepository.Value.Remover(id);
         }
 
-        public async Task Vender(Guid id, VeiculoInputModel veiculo)
+        public async Task Vender(string chassi, DateTime dataVenda, decimal valorVenda)
         {
-            var entidadeVeiculo = await _veiculoRepository.Value.Obter(id);
+            var entidadeVeiculo = await _veiculoRepository.Value.ObterPorChassi(chassi);
 
             if (entidadeVeiculo == null)
                 throw new VeiculoNaoCadastradoException();
 
-            entidadeVeiculo.ValorVenda = veiculo.ValorVenda;
-            entidadeVeiculo.DataVenda = veiculo.DataVenda;
+            entidadeVeiculo.ValorVenda = valorVenda;
+            entidadeVeiculo.DataVenda = dataVenda;
 
-            await _veiculoRepository.Value.Atualizar(entidadeVeiculo);
+            await _veiculoRepository.Value.Vender(entidadeVeiculo);
         }
 
         public void Dispose()
