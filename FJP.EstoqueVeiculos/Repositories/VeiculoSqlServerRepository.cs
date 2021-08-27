@@ -37,11 +37,6 @@ namespace FJP.EstoqueVeiculos.Repositories
             await sqlConnection.CloseAsync();
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task Inserir(Veiculo veiculo)
         {
             var query = $@"INSERT veiculos
@@ -201,9 +196,15 @@ namespace FJP.EstoqueVeiculos.Repositories
             return veiculo;
         }
 
-        public Task Remover(Guid id)
+        public async Task Remover(Guid id)
         {
-            throw new NotImplementedException();
+            var query = $@"DELETE FROM veiculos
+                        WHERE id = '{id}'";
+
+            await sqlConnection.OpenAsync();
+            SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+            sqlCommand.ExecuteNonQuery();
+            await sqlConnection.CloseAsync();
         }
 
         public async Task Vender(Veiculo veiculo)
@@ -217,6 +218,11 @@ namespace FJP.EstoqueVeiculos.Repositories
             SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
             sqlCommand.ExecuteNonQuery();
             await sqlConnection.CloseAsync();
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }
