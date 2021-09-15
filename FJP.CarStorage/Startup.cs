@@ -1,6 +1,6 @@
-using FJP.EstoqueVeiculos.Middleware;
-using FJP.EstoqueVeiculos.Repositories;
-using FJP.EstoqueVeiculos.Services;
+using FJP.CarStorage.Middleware;
+using FJP.CarStorage.Repositories;
+using FJP.CarStorage.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -17,7 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace FJP.EstoqueVeiculos
+namespace FJP.CarStorage
 {
     public class Startup
     {
@@ -34,15 +34,15 @@ namespace FJP.EstoqueVeiculos
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "FJP.EstoqueVeiculos", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "FJP.CarStorage", Version = "v1" });
 
                 var basePath = AppDomain.CurrentDomain.BaseDirectory;
                 var fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
                 c.IncludeXmlComments(Path.Combine(basePath, fileName));
             });
 
-            services.AddScoped<IVeiculoService, VeiculoService>();
-            services.AddScoped<IVeiculoRepository, VeiculoSqlServerRepository>();
+            services.AddScoped<ICarService, CarService>();
+            services.AddScoped<ICarRepository, CarSqlServerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +52,7 @@ namespace FJP.EstoqueVeiculos
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FJP.EstoqueVeiculos v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FJP.CarStorage v1"));
             }
 
             app.UseMiddleware<ExceptionMiddleware>();
